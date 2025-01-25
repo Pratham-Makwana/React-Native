@@ -24,6 +24,7 @@ function Home() {
           title="Post Show"
           onPress={() => navigation.navigate('PostScreen')}
         />
+        
       </View>
     </View>
   );

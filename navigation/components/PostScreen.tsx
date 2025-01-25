@@ -4,6 +4,10 @@ import {useNavigation} from '@react-navigation/native';
 
 const PostScreen = ({route}) => {
   const navigation = useNavigation();
+
+  useEffect(() => {
+    
+  }, [route.params?.post]);
   return (
     <View style={styles.container}>
       <Button
