@@ -12,10 +12,6 @@ function Details({route}) {
       <Text style={styles.heading}>{itemId}</Text>
       <Text style={styles.heading}>{otherParam}</Text>
       <View style={styles.btnContainer}>
-        <Button
-          title="Go to Details Again"
-          onPress={() => navigation.push('Details')}
-        />
         <Button title="Go Back" onPress={() => navigation.goBack()} />
         <Button title="Go To Home" onPress={() => navigation.popTo('Home')} />
       </View>

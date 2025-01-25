@@ -7,15 +7,24 @@ function Home() {
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Home Screen</Text>
-      <Button
-        title="Go to Details"
-        onPress={() =>
-          navigation.navigate('Details', {
-            itemId: 86,
-            otherParam: 'anything you want here',
-          })
-        }
-      />
+      <View style={styles.detailsBtn}>
+        <Button
+          title="Go to Details"
+          onPress={() =>
+            navigation.navigate('Details', {
+              itemId: 86,
+              otherParam: 'anything you want here',
+            })
+          }
+        />
+      </View>
+
+      <View style={styles.btnContainer}>
+        <Button
+          title="Post Show"
+          onPress={() => navigation.navigate('PostScreen')}
+        />
+      </View>
     </View>
   );
 }
@@ -29,6 +38,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '700',
     marginBottom: 10,
+  },
+  detailsBtn: {
+    marginBottom: 10,
+  },
+  btnContainer: {
+    gap: 10,
   },
 });
 
