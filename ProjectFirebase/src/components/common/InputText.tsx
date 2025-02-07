@@ -16,6 +16,7 @@ const InputText = ({
       placeholder={placeholder}
       secureTextEntry={secureTextEntry}
       keyboardType={keyboardType}
+      autoCapitalize='none'
     />
   );
 };

@@ -7,35 +7,39 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, {useState} from 'react';
-import auth from '@react-native-firebase/auth';
+
 import InputText from '../../components/common/InputText';
+import { createUserWithEmailAndPassword } from '@react-native-firebase/auth';
+import { firebaseAuth } from '../../config/firebase';
+import { useNavigation } from '@react-navigation/native';
+
+
 
 const SignUp = () => {
+const navigation = useNavigation()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
 
-  const signIn = () => {
-    auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(res => {
-        Alert.alert('User Created');
-        console.log('User account created & signed in!');
-      })
-      .catch(error => {
-        if (error.code === 'auth/email-already-in-use') {
-          console.log('That email address is already in use!');
-        }
+  const handleSignUp =async () => {
+    if(email && password){
+      try{
+        await createUserWithEmailAndPassword(firebaseAuth, email,password);
+      }catch(error){
+        console.log('==> ErrorSignUp', error)
+      }
+    }
+  }
 
-        if (error.code === 'auth/invalid-email') {
-          console.log('That email address is invalid!');
-        }
 
-        console.error(error);
-      });
-  };
   return (
     <View style={styles.mainContainer}>
       <Text style={styles.title}>Sign Up</Text>
+      <InputText
+        placeholder="Enter Name"
+        value={username}
+        onChangeText={setUsername}
+      />
       <InputText
         placeholder="Enter Email"
         value={email}
@@ -49,11 +53,14 @@ const SignUp = () => {
         keyboardType="visible-password"
         secureTextEntry={true}
       />
-      <TouchableOpacity style={styles.signBtn} onPress={signIn}>
-        <Text style={styles.signUpText}>SignIn</Text>
+      <TouchableOpacity style={styles.signBtn} onPress={handleSignUp} >
+        <Text style={styles.signUpText}>SignUp</Text>
       </TouchableOpacity>
       <Text style={styles.text}>
-        Don't have an account? <Text style={styles.link}>Sign In</Text>
+        Already have an account?
+        <Text style={styles.link} onPress={() => navigation.goBack('Login') }>
+          LogIn
+        </Text>
       </Text>
     </View>
   );
