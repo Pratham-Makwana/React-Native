@@ -6,11 +6,70 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  PermissionsAndroid
+  Platform,
 } from 'react-native';
+import {launchCamera} from 'react-native-image-picker';
+import {PERMISSIONS, request, RESULTS} from 'react-native-permissions';
 
 const Selfie = () => {
-  const [photo, setPhoto] = useState(null); // Store the photo URI
+  const [photo, setPhoto] = useState(null);
+
+  const requestCameraPermission = async () => {
+    try {
+      let permission;
+
+      // Handle Android Permissions
+      if (Platform.OS === 'android') {
+        permission = PERMISSIONS.ANDROID.CAMERA;
+      }
+
+      // Handle iOS Permissions
+      if (Platform.OS === 'ios') {
+        permission = PERMISSIONS.IOS.CAMERA;
+      }
+
+      // Request permission
+      const granted = await request(permission);
+
+      if (granted === RESULTS.GRANTED) {
+        console.log('You can use the camera');
+        const result = await launchCamera({
+          mediaType: 'photo',
+          cameraType : 'front',
+        });
+        console.log('==> Result', result);
+        setPhoto(result?.assets[0]?.uri);   
+      } else {
+        console.log('Camera permission denied');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+
+  // const requestCameraPermission = async () => {
+  //   try {
+  //     const granted = await PermissionsAndroid.request(
+  //       PermissionsAndroid.PERMISSIONS.CAMERA,
+  //       {
+  //         title: 'Cool Photo App Camera Permission',
+  //         message:
+  //           'Cool Photo App needs access to your camera ' +
+  //           'so you can take awesome pictures.',
+  //         buttonNeutral: 'Ask Me Later',
+  //         buttonNegative: 'Cancel',
+  //         buttonPositive: 'OK',
+  //       },
+  //     );
+  //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  //       console.log('You can use the camera');
+  //     } else {
+  //       console.log('Camera permission denied');
+  //     }
+  //   } catch (err) {
+  //     console.warn(err);
+  //   }
+  // };
 
   const openCamera = () => {
     // launchCamera(
@@ -37,7 +96,9 @@ const Selfie = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Take a Selfie</Text>
-      <TouchableOpacity style={styles.markBtn}>
+      <TouchableOpacity
+        style={styles.markBtn}
+        onPress={requestCameraPermission}>
         <Text style={styles.btnText}>Mark Attendance</Text>
       </TouchableOpacity>
 

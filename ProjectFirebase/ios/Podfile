@@ -9,6 +9,9 @@ platform :ios, '14.0'
 prepare_react_native_project!
 
 
+
+
+
 pod 'FirebaseCoreExtension', :modular_headers => true
 pod 'FirebaseInstallations', :modular_headers => true
 pod 'FirebaseCore', :modular_headers => true

@@ -10,6 +10,9 @@ const Home = () => {
       <TouchableOpacity style={styles.markBtn} onPress={() => navigation.navigate('Selfie') }>
         <Text style={styles.btnText}>Mark Attendance</Text>
       </TouchableOpacity>
+      <TouchableOpacity style={styles.markBtn} onPress={() => navigation.navigate('UserLocation') }>
+        <Text style={styles.btnText}>Get Location</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -28,6 +31,7 @@ const styles = StyleSheet.create({
     padding : 10,
     width : '100%',
     borderRadius : 10,
+    marginBottom : 10
    
   },
   btnText : {

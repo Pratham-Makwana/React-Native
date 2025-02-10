@@ -9,6 +9,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {signOut} from '@react-native-firebase/auth';
 import {firebaseAuth} from '../config/firebase';
 import Selfie from '../screen/Selfie';
+import UserLocation from '../screen/UserLocation';
 
 const Stack = createNativeStackNavigator();
 
@@ -50,6 +51,7 @@ const RootNavigator = () => {
             component={Selfie}
           
           />
+          <Stack.Screen name='UserLocation' component={UserLocation}/>
         </Stack.Navigator>
         
       </NavigationContainer>
