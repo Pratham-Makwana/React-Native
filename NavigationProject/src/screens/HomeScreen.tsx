@@ -19,29 +19,39 @@ const topics = [
     screen: 'FlatListDemo',
   },
   {
-    id : 2,
-    title : 'Section List Demo',
-    screen : 'SectionListDemo'
+    id: 2,
+    title: 'Section List Demo',
+    screen: 'SectionListDemo',
   },
   {
-    id : 3,
-    title : 'PullToRefresh Demo',
-    screen : 'PullToRefresh'
+    id: 3,
+    title: 'PullToRefresh Demo',
+    screen: 'PullToRefresh',
   },
   {
-    id : 4,
-    title : 'Data Fetching',
-    screen : 'DataFetching'
+    id: 4,
+    title: 'Data Fetching',
+    screen: 'DataFetching',
   },
   {
-    id : 5,
-    title : 'Axios ',
-    screen : 'AxiosDemo'
+    id: 5,
+    title: 'Axios ',
+    screen: 'AxiosDemo',
   },
   {
-    id : 6,
-    title : 'Theme Demo ',
-    screen : 'ThemeDemo'
+    id: 6,
+    title: 'Theme Demo ',
+    screen: 'ThemeDemo',
+  },
+  {
+    id: 7,
+    title: 'Basic Animation Demo ',
+    screen: 'BasicAnimation',
+  },
+  {
+    id: 8,
+    title: 'Interpolation Demo ',
+    screen: 'InterpolationDemo',
   },
 ];
 

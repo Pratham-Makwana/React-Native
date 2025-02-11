@@ -11,6 +11,8 @@ import PullToRefresh from './screens/PullToRefresh'
 import DataFetching from './screens/DataFetching'
 import AxiosScreen from './screens/AxiosScreen'
 import ThemeDemo from './screens/ThemeDemo'
+import BasicAnimation from './screens/BasicAnimation'
+import InterpolationDemo from './screens/InterpolationDemo'
 
 export type RootStackParamList = {
   Home : undefined,
@@ -23,6 +25,8 @@ export type RootStackParamList = {
   DataFetching : undefined
   AxiosDemo : undefined
   ThemeDemo : undefined
+  BasicAnimation : undefined
+  InterpolationDemo : undefined
 }
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -37,6 +41,8 @@ const RootNavigator : React.FC = () => {
         <Stack.Screen name='DataFetching' component={DataFetching}/>
         <Stack.Screen name='AxiosDemo' component={AxiosScreen}/>
         <Stack.Screen name='ThemeDemo' component={ThemeDemo}/>
+        <Stack.Screen name='BasicAnimation' component={BasicAnimation}/>
+        <Stack.Screen name='InterpolationDemo' component={InterpolationDemo}/>
         <Stack.Screen options={{headerShown : false}} name='StackDemo' component={StackNavigationDemo}/>
         <Stack.Screen options={{headerShown : false}} name='TabDemo' component={TabNavigationDemo}/>
         <Stack.Screen options={{headerShown : false}}  name='DrawerDemo' component={DrawerNavigationDemo}/>
