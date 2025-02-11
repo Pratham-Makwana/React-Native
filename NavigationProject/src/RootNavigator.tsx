@@ -13,6 +13,8 @@ import AxiosScreen from './screens/AxiosScreen'
 import ThemeDemo from './screens/ThemeDemo'
 import BasicAnimation from './screens/BasicAnimation'
 import InterpolationDemo from './screens/InterpolationDemo'
+import CombinedAnimation from './screens/CombinedAnimation'
+import GestureAnimation from './screens/GestureAnimation'
 
 export type RootStackParamList = {
   Home : undefined,
@@ -27,6 +29,8 @@ export type RootStackParamList = {
   ThemeDemo : undefined
   BasicAnimation : undefined
   InterpolationDemo : undefined
+  CombinedAnimation : undefined
+  GestureAnimation : undefined
 }
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -43,6 +47,8 @@ const RootNavigator : React.FC = () => {
         <Stack.Screen name='ThemeDemo' component={ThemeDemo}/>
         <Stack.Screen name='BasicAnimation' component={BasicAnimation}/>
         <Stack.Screen name='InterpolationDemo' component={InterpolationDemo}/>
+        <Stack.Screen name='CombinedAnimation' component={CombinedAnimation}/>
+        <Stack.Screen name='GestureAnimation' component={GestureAnimation}/>
         <Stack.Screen options={{headerShown : false}} name='StackDemo' component={StackNavigationDemo}/>
         <Stack.Screen options={{headerShown : false}} name='TabDemo' component={TabNavigationDemo}/>
         <Stack.Screen options={{headerShown : false}}  name='DrawerDemo' component={DrawerNavigationDemo}/>

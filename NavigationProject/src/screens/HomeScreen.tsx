@@ -1,9 +1,6 @@
 import {Button, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
-import {
-  NavigationContainerProps,
-  useNavigation,
-} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from '../RootNavigator';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {FlatList} from 'react-native-gesture-handler';
@@ -53,12 +50,46 @@ const topics = [
     title: 'Interpolation Demo ',
     screen: 'InterpolationDemo',
   },
+  {
+    id: 9,
+    title: 'Combined Animation Demo ',
+    screen: 'CombinedAnimation',
+  },
+  {
+    id: 10,
+    title: 'Gesture Animation Demo ',
+    screen: 'GestureAnimation',
+  },
 ];
 
 const HomeScreen: React.FC = () => {
   const navigation = useNavigation<HomeScreenNavigationProps>();
   return (
     <View style={styles.container}>
+
+
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        ListHeaderComponent={<NavigationComponent />}
+        data={topics}
+        renderItem={({item}) => (
+          <TouchableOpacity
+            style={styles.topicBtn}
+            onPress={() =>
+              navigation.navigate(item.screen as keyof RootStackParamList)
+            }>
+            <Text style={styles.topicText}>{item.title}</Text>
+          </TouchableOpacity>
+        )}
+      />
+    </View>
+  );
+};
+
+const NavigationComponent = () => {
+  const navigation = useNavigation<HomeScreenNavigationProps>();
+  return (
+    <>
       <Text style={styles.text}>Navigation: </Text>
       <View style={styles.btnContainer}>
         <Button
@@ -75,20 +106,7 @@ const HomeScreen: React.FC = () => {
         />
       </View>
       <Text style={styles.text}>FlatList Demo: </Text>
-      {/* <Button title='FlatList Demo' onPress={() => navigation.navigate('FlatListDemo')}/> */}
-      <FlatList
-        data={topics}
-        renderItem={({item}) => (
-          <TouchableOpacity
-            style={styles.topicBtn}
-            onPress={() =>
-              navigation.navigate(item.screen as keyof RootStackParamList)
-            }>
-            <Text style={styles.topicText}>{item.title}</Text>
-          </TouchableOpacity>
-        )}
-      />
-    </View>
+    </>
   );
 };
 
@@ -96,9 +114,10 @@ export default HomeScreen;
 
 const styles = StyleSheet.create({
   container: {
+    // flex: 1,
     justifyContent: 'center',
     padding: 20,
-    marginTop: 10,
+    // marginTop: 10,
   },
   text: {
     fontSize: 24,
