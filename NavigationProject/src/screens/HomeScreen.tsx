@@ -37,7 +37,12 @@ const topics = [
     id : 5,
     title : 'Axios ',
     screen : 'AxiosDemo'
-  }
+  },
+  {
+    id : 6,
+    title : 'Theme Demo ',
+    screen : 'ThemeDemo'
+  },
 ];
 
 const HomeScreen: React.FC = () => {

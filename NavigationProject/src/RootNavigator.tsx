@@ -10,6 +10,7 @@ import SectionListScreen from './screens/SectionListScreen'
 import PullToRefresh from './screens/PullToRefresh'
 import DataFetching from './screens/DataFetching'
 import AxiosScreen from './screens/AxiosScreen'
+import ThemeDemo from './screens/ThemeDemo'
 
 export type RootStackParamList = {
   Home : undefined,
@@ -21,6 +22,7 @@ export type RootStackParamList = {
   PullToRefresh : undefined
   DataFetching : undefined
   AxiosDemo : undefined
+  ThemeDemo : undefined
 }
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -34,6 +36,7 @@ const RootNavigator : React.FC = () => {
         <Stack.Screen name='PullToRefresh' component={PullToRefresh}/>
         <Stack.Screen name='DataFetching' component={DataFetching}/>
         <Stack.Screen name='AxiosDemo' component={AxiosScreen}/>
+        <Stack.Screen name='ThemeDemo' component={ThemeDemo}/>
         <Stack.Screen options={{headerShown : false}} name='StackDemo' component={StackNavigationDemo}/>
         <Stack.Screen options={{headerShown : false}} name='TabDemo' component={TabNavigationDemo}/>
         <Stack.Screen options={{headerShown : false}}  name='DrawerDemo' component={DrawerNavigationDemo}/>

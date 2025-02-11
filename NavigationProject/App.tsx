@@ -1,17 +1,16 @@
 import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
-
-import {StyleSheet, Text, View} from 'react-native';
 import RootNavigator from './src/RootNavigator';
+import {ThemeProvider} from './src/components/context/ThemeContext';
 
 function App(): React.JSX.Element {
   return (
-    <NavigationContainer>
-      <RootNavigator />
-    </NavigationContainer>
+    <ThemeProvider>
+      <NavigationContainer>
+        <RootNavigator />
+      </NavigationContainer>
+    </ThemeProvider>
   );
 }
-
-const styles = StyleSheet.create({});
 
 export default App;
