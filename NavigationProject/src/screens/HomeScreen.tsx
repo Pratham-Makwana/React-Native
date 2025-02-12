@@ -60,14 +60,17 @@ const topics = [
     title: 'Gesture Animation Demo ',
     screen: 'GestureAnimation',
   },
+  {
+    id: 11,
+    title: 'ReAnimated Core Demo ',
+    screen: 'ReAnimatedCore',
+  },
 ];
 
 const HomeScreen: React.FC = () => {
   const navigation = useNavigation<HomeScreenNavigationProps>();
   return (
     <View style={styles.container}>
-
-
       <FlatList
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={<NavigationComponent />}
