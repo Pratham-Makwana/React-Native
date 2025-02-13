@@ -16,6 +16,9 @@ import InterpolationDemo from './screens/InterpolationDemo'
 import CombinedAnimation from './screens/CombinedAnimation'
 import GestureAnimation from './screens/GestureAnimation'
 import ReAnimatedCore from './screens/ReAnimatedCore'
+import ReAnimationType from './screens/ReAnimationType'
+import ReAnimatedGesture from './screens/ReAnimatedGesture'
+import ReAnimatedFormValidation from './screens/ReAnimatedFormValidation'
 
 export type RootStackParamList = {
   Home : undefined,
@@ -33,6 +36,9 @@ export type RootStackParamList = {
   CombinedAnimation : undefined
   GestureAnimation : undefined
   ReAnimatedCore : undefined
+  ReAnimationType : undefined
+  ReAnimatedGesture : undefined
+  ReAnimatedFormValidation: undefined
 }
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -52,6 +58,9 @@ const RootNavigator : React.FC = () => {
         <Stack.Screen name='CombinedAnimation' component={CombinedAnimation}/>
         <Stack.Screen name='GestureAnimation' component={GestureAnimation}/>
         <Stack.Screen name='ReAnimatedCore' component={ReAnimatedCore}/>
+        <Stack.Screen name='ReAnimationType' component={ReAnimationType}/>
+        <Stack.Screen name='ReAnimatedGesture' component={ReAnimatedGesture}/>
+        <Stack.Screen name='ReAnimatedFormValidation' component={ReAnimatedFormValidation}/>
         <Stack.Screen options={{headerShown : false}} name='StackDemo' component={StackNavigationDemo}/>
         <Stack.Screen options={{headerShown : false}} name='TabDemo' component={TabNavigationDemo}/>
         <Stack.Screen options={{headerShown : false}}  name='DrawerDemo' component={DrawerNavigationDemo}/>

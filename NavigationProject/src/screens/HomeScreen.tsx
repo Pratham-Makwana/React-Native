@@ -65,6 +65,21 @@ const topics = [
     title: 'ReAnimated Core Demo ',
     screen: 'ReAnimatedCore',
   },
+  {
+    id: 12,
+    title: 'ReAnimation Type Demo ',
+    screen: 'ReAnimationType',
+  },
+  {
+    id : 13,
+    title : 'ReAnimated Gesture',
+    screen : 'ReAnimatedGesture'
+  },
+  {
+    id : 14,
+    title : 'ReAnimated Form Validation ',
+    screen : 'ReAnimatedFormValidation'
+  }
 ];
 
 const HomeScreen: React.FC = () => {
