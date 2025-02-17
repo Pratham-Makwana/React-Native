@@ -66,7 +66,7 @@ router.post("/login", async (req: Request, res: Response): Promise<any> => {
         userId: currentUser._id,
       },
       "JWT_SECRET",
-      { expiresIn: "1h" }
+      // { expiresIn: "1h" }
     );
 
     return res.status(200).json({
@@ -83,5 +83,7 @@ router.post("/login", async (req: Request, res: Response): Promise<any> => {
     });
   }
 });
+
+
 
 export default router;

@@ -26,8 +26,6 @@ const RootNavigation = () => {
   const navigation = useNavigation<NavigationProps>();
   const {isLoading, isAuthenticated} = useContext(AuthContext);
 
-
-
   useEffect(() => {
     if (!isLoading) {
       navigation.reset({
@@ -38,11 +36,17 @@ const RootNavigation = () => {
   }, [isAuthenticated, isLoading]);
 
   if (isLoading) {
-    return <ActivityIndicator size="large" color="#0000ff" />;
+    return (
+      <ActivityIndicator
+        style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
+        size="large"
+        color="#0000ff"
+      />
+    );
   }
 
   return (
-    <Stack.Navigator initialRouteName='Login'>
+    <Stack.Navigator initialRouteName="Login">
       <Stack.Screen
         name="Login"
         component={LoginScreen}

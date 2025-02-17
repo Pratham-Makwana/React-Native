@@ -1,4 +1,5 @@
 import {
+  Alert,
   StyleSheet,
   Text,
   TextInput,
@@ -7,22 +8,43 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
+import {Recipe} from '../context/RecipeContext';
 
 interface CreateRecipeFormProps {
+  onSubmit: (
+    recipe: Omit<Recipe, '_id' | 'cratedBy' | 'createdAt'>,
+  ) => Promise<void>;
   onCancle: () => void;
 }
 
-const CreateRecipeForm: React.FC<CreateRecipeFormProps> = ({onCancle}) => {
+const CreateRecipeForm: React.FC<CreateRecipeFormProps> = ({
+  onCancle,
+  onSubmit,
+}) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   // dropdown menu state
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState<string | null>(null);
+  const [difficulty, setDifficulty] = useState<'Easy' | 'Medium' | 'Hard'>(
+    'Easy',
+  );
   const [items, setItems] = useState([
     {label: 'Easy', value: 'Easy'},
     {label: 'Medium', value: 'Medium'},
     {label: 'Hard', value: 'Hard'},
   ]);
+  // console.log('==>', difficulty);
+
+  const handleCreateRecipe = () => {
+    if (title && description) {
+      onSubmit({title, description, difficulty});
+      setTitle('')
+      setDescription('')
+      setDifficulty('Easy')
+    } else {
+      Alert.alert('Invalid input', 'Please fill all fields');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -50,12 +72,12 @@ const CreateRecipeForm: React.FC<CreateRecipeFormProps> = ({onCancle}) => {
         <Text style={styles.label}>Difficulty</Text>
         <DropDownPicker
           open={open}
-          value={value}
+          value={difficulty}
           items={items}
           setOpen={setOpen}
-          setValue={setValue}
+          setValue={setDifficulty}
           setItems={setItems}
-          placeholder={'Choose difficulty'}
+          // placeholder={'Choose difficulty'}
           style={styles.picker}
           dropDownContainerStyle={styles.dropdown}
         />
@@ -68,7 +90,9 @@ const CreateRecipeForm: React.FC<CreateRecipeFormProps> = ({onCancle}) => {
           onPress={onCancle}>
           <Text style={styles.btnTxt}>Cancel</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.btn, styles.submitBtn]}>
+        <TouchableOpacity
+          onPress={handleCreateRecipe}
+          style={[styles.btn, styles.submitBtn]}>
           <Text style={styles.btnTxt}>Create Recipe</Text>
         </TouchableOpacity>
       </View>

@@ -3,7 +3,7 @@ import axios from 'axios';
 import React, {createContext, ReactNode, useEffect, useState} from 'react';
 
 // const API_URL = 'http://10.0.2.2:5000';
-const API_URL = 'http://192.168.200.98:5000';
+export const API_URL = 'http://192.168.200.98:5000';
 
 interface AuthContextData {
   token: string | null;
@@ -38,7 +38,7 @@ export const AuthProvider: React.FC<{children: ReactNode}> = ({children}) => {
       }
       return true;
     } catch (error) {
-      console.error(error);
+      console.log(error);
       return false;
     } finally {
       setIsLoading(false);
@@ -49,8 +49,6 @@ export const AuthProvider: React.FC<{children: ReactNode}> = ({children}) => {
   }, []);
 
   const signUp = async (email: string, password: string): Promise<boolean> => {
-   
-
     try {
       const result = await axios.post(`${API_URL}/api/auth/register`, {
         email,
@@ -61,9 +59,9 @@ export const AuthProvider: React.FC<{children: ReactNode}> = ({children}) => {
       // else return false;
       return result?.data?.success ?? false;
     } catch (error) {
-      console.error(error);
+      console.log(error);
       if (axios.isAxiosError(error)) {
-        console.error('Error Details', error?.response?.data);
+        console.log('signUp Error Details', error?.response?.data);
       }
       return false;
     }
@@ -87,9 +85,9 @@ export const AuthProvider: React.FC<{children: ReactNode}> = ({children}) => {
       }
       return false;
     } catch (error) {
-      console.error(error);
+      console.log(error);
       if (axios.isAxiosError(error)) {
-        console.error('Error Details', error?.response?.data);
+        console.log('signIn Error Details', error?.response?.data);
       }
       return false;
     }
@@ -103,7 +101,7 @@ export const AuthProvider: React.FC<{children: ReactNode}> = ({children}) => {
       setUserId(null);
       setToken(null);
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
   return (

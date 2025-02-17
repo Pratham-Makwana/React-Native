@@ -1,4 +1,6 @@
-import {createContext, ReactNode, useState} from 'react';
+import axios from 'axios';
+import {createContext, ReactNode, useContext, useState} from 'react';
+import {API_URL, AuthContext} from './AuthContext';
 
 export interface Recipe {
   _id: string;
@@ -14,17 +16,86 @@ interface RecipeContextData {
   createRecipe: (
     recipe: Omit<Recipe, '_id' | 'cratedBy' | 'createdAt'>,
   ) => Promise<void>;
+  fetchRecipes: () => Promise<void>;
+  fetchSingleRecipe: (id: string) => Promise<Recipe>;
+  deleteRecipe: (id: string) => Promise<void>;
 }
 
 export const RecipeContext = createContext<RecipeContextData>(
   {} as RecipeContextData,
 );
 
+export const RecipeProvider: React.FC<{children: ReactNode}> = ({children}) => {
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const {token} = useContext(AuthContext);
 
-export const RecipeProvider : React.FC<{children : ReactNode}> = ({children}) => {
+  const fetchRecipes = async () => {
+    try {
+      const result = await axios.get(`${API_URL}/api/recipe/get`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    const [recipes, setRecipes] = useState<Recipe[]>([])
-    const createRecipe = async () => {}
+      setRecipes(result.data.allRecipeData);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
-    return <RecipeContext.Provider value={{recipes, createRecipe}}>{children}</RecipeContext.Provider>
-}
+  const deleteRecipe = async (id: string) => {
+    try {
+     await axios.delete(`${API_URL}/api/recipe/delete/${id}`, {
+      headers : {
+        Authorization : `Bearer ${token}`
+      }
+     });
+    } catch (e) {
+      console.log('==> deleteRecipe Error', e);
+    }
+  };
+
+  const fetchSingleRecipe = async (id: string): Promise<Recipe> => {
+    // console.log('==> id ', id);
+
+    try {
+      const result = await axios.get(`${API_URL}/api/recipe/get/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      // console.log('==> result context', result.data);
+
+      return result.data.singleRecipe;
+    } catch (e) {
+      console.log('==> FetchSingleRecipe Error', e);
+      throw e;
+    }
+  };
+  const createRecipe = async (
+    recipe: Omit<Recipe, '_id' | 'cratedBy' | 'createdAt'>,
+  ) => {
+    // console.log('==> Recipe From context', recipe);
+    try {
+      const result = await axios.post(`${API_URL}/api/recipe/create`, recipe, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      // console.log('==>Newly Recipe', result?.data);
+      if (result?.data?.success)
+        setRecipes([...recipes, result.data.newRecipeData]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // console.log(token);
+
+  return (
+    <RecipeContext.Provider
+      value={{recipes, createRecipe, fetchRecipes, fetchSingleRecipe, deleteRecipe}}>
+      {children}
+    </RecipeContext.Provider>
+  );
+};
