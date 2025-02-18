@@ -1,0 +1,105 @@
+Change App Icon
+
+Android:
+	download the icon from the https://icon.kitchen/ or any app icon generator.
+Extract that file
+In Project : Android->App->src->main->res  change the icon with your downloaded icon
+
+In AndroidManifest.xml change to this android:roundIcon="@mipmap/ic_launcher" . If we don’t have rounded ic_launcher icon
+
+IOS : 
+
+ In Ios-> ProjectName-> Images.xcassets -> replace Appicon.appiconset  with iOS icon that you download
+
+
+Change Application Name : 
+
+Android : 
+
+In Project : Android->App->src->main->res-> values->strings.xml change the application name
+
+iOS : 
+
+In iOS -> projectName -> Indo.plist -> <key>CFBundleDisplayName</key> in this change the application name
+
+
+Implement Splash Screen 
+
+ Android: 
+ https://apetools.webprofusion.com/?source=post_page---------------------------#/tools/imagegorilla
+Download Splash Images for android and iOS
+
+inside → android/app/src/main/res replace you images with your download images
+
+npm i react-native-splash-screen
+
+inside → android/app/src/main/java/com/projectName/MainAcitivity.kt
+
+import android.os.Bundle; 
+import org.devio.rn.splashscreen.SplashScreen; 
+
+In Function 
+// this is not to add below 
+ override fun getMainComponentName(): String = "Client"
+
+Add this  below 
+
+	// add this three line
+	override fun onCreate(savedInstanceState: Bundle?) {
+    		SplashScreen.show(this)  // here
+    		super.onCreate(savedInstanceState)
+	}
+	
+
+Inside res create a layout directory and create a file launch_screen.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#121928">
+
+    <ImageView 
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content" 
+        android:src="@drawable/screen" 
+        android:scaleType="centerCrop" 
+        android:layout_centerInParent="true" /> 
+
+</RelativeLayout>
+
+Inside res -> values -> style.xml  Add this line 
+
+<item name="android:windowIsTranslucent">true</item>
+
+And change the @layout/ with @layout/launch_screen 
+ <item name="android:editTextBackground">@layout/launch_screen</item> 
+
+If you getting error : 
+Comment this line
+ <!-- <item name="android:editTextBackground">@layout/launch_screen</item> -->
+
+
+// Add this line to hide splash screen
+ useEffect(() => {
+    SplashScreen.hide();
+  }, []);
+
+
+
+IOS
+
+In Xcode Images -> there is AppIcon -> right click anywhere create Image set name image set LauchImage or anything and move dowloaded icon of iOS-> launchimage -> launchImage.png 1x , LaunchImage~iphone-320x480.png 2x ,LaunchImage~iphone_640x960.png 3x
+
+ 
+
+Now in Xcode -> ProjectName -> LauchScreen ->  view controller Scene -> view Controller -> View  delete everything expect safe area
+
+Now on right side code plus button click there or View ->Show Library -> Image View  
+In image view select your Images like LauchImage that you added to Images  then manage your view 
+
+That it now run application
+
+
+

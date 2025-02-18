@@ -61,7 +61,7 @@ router.get(
         _id: req.params.id,
         // cratedBy: req.userId,
       });
-      console.log("single", getSingleRecipe);
+      // console.log("single", getSingleRecipe);
 
       if (!getSingleRecipe) {
         return res.status(400).json({
@@ -116,4 +116,6 @@ router.delete(
   }
 );
 
+
+router.post('/upload', )
 export default router;

@@ -1,4 +1,10 @@
-import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import React, {useContext, useEffect} from 'react';
 import {
   createNativeStackNavigator,
@@ -8,14 +14,17 @@ import LoginScreen from '../screens/LoginScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import HomeScreen from '../screens/HomeScreen';
 import RecipeDetailsScreen from '../screens/RecipeDetailsScreen';
+import SplashScreen from 'react-native-splash-screen';
 import {useNavigation} from '@react-navigation/native';
 import {AuthContext} from '../context/AuthContext';
+import ImageUpload from '../screens/ImageUpload';
 
 export type RootStackParamsList = {
   Login: undefined;
   SignUp: undefined;
   Home: undefined;
   RecipeDetails: {recipeId: string};
+  ImageUpload: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamsList>();
@@ -26,6 +35,9 @@ const RootNavigation = () => {
   const navigation = useNavigation<NavigationProps>();
   const {isLoading, isAuthenticated} = useContext(AuthContext);
 
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
   useEffect(() => {
     if (!isLoading) {
       navigation.reset({
@@ -64,6 +76,7 @@ const RootNavigation = () => {
         options={{headerShown: false}}
       />
       <Stack.Screen name="RecipeDetails" component={RecipeDetailsScreen} />
+      <Stack.Screen name="ImageUpload" component={ImageUpload} />
     </Stack.Navigator>
   );
 };

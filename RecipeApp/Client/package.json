@@ -20,8 +20,11 @@
     "react-native": "0.74.5",
     "react-native-dropdown-picker": "^5.4.6",
     "react-native-gesture-handler": "^2.23.1",
+    "react-native-image-picker": "^7.2.3",
     "react-native-safe-area-context": "^5.2.0",
-    "react-native-screens": "^4.6.0"
+    "react-native-screens": "^4.6.0",
+    "react-native-splash-screen": "^3.3.0",
+    "react-native-toast-message": "^2.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

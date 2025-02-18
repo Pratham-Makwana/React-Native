@@ -19,6 +19,7 @@ interface RecipeContextData {
   fetchRecipes: () => Promise<void>;
   fetchSingleRecipe: (id: string) => Promise<Recipe>;
   deleteRecipe: (id: string) => Promise<void>;
+  
 }
 
 export const RecipeContext = createContext<RecipeContextData>(
@@ -29,6 +30,7 @@ export const RecipeProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const {token} = useContext(AuthContext);
 
+  // ============== Fetch All Recipe ==============
   const fetchRecipes = async () => {
     try {
       const result = await axios.get(`${API_URL}/api/recipe/get`, {
@@ -43,6 +45,8 @@ export const RecipeProvider: React.FC<{children: ReactNode}> = ({children}) => {
     }
   };
 
+
+  // =============== Delete Recipe ================
   const deleteRecipe = async (id: string) => {
     try {
      await axios.delete(`${API_URL}/api/recipe/delete/${id}`, {
@@ -55,6 +59,7 @@ export const RecipeProvider: React.FC<{children: ReactNode}> = ({children}) => {
     }
   };
 
+  // ============== Fetch Single Recipe  ==============
   const fetchSingleRecipe = async (id: string): Promise<Recipe> => {
     // console.log('==> id ', id);
 
@@ -72,6 +77,8 @@ export const RecipeProvider: React.FC<{children: ReactNode}> = ({children}) => {
       throw e;
     }
   };
+
+  // ==============  Create Recipe ==============
   const createRecipe = async (
     recipe: Omit<Recipe, '_id' | 'cratedBy' | 'createdAt'>,
   ) => {
@@ -90,7 +97,7 @@ export const RecipeProvider: React.FC<{children: ReactNode}> = ({children}) => {
     }
   };
 
-  // console.log(token);
+
 
   return (
     <RecipeContext.Provider

@@ -17,6 +17,7 @@ import {RootStackParamsList} from '../navigation/RootNavigation';
 import CreateRecipeForm from '../components/CreateRecipeForm';
 import {Recipe, RecipeContext} from '../context/RecipeContext';
 import RecipeItem from '../components/RecipeItem';
+import Toast from 'react-native-toast-message';
 
 type HomeScreenNavigationProps = NativeStackNavigationProp<
   RootStackParamsList,
@@ -33,13 +34,20 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const {fetchRecipes, recipes, deleteRecipe} = useContext(RecipeContext);
 
-  const filteredRecipe = recipes.filter(recipeItem  => recipeItem.title.toLowerCase().includes(searchQuery.toLowerCase()))
+  const filteredRecipe = recipes.filter(recipeItem =>
+    recipeItem.title.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
 
   const handleOnCreateReciepeButtonSubmit = async (
     newRecipe: Omit<Recipe, '_id' | 'cratedBy' | 'createdAt'>,
   ) => {
     createRecipe(newRecipe);
     setShowModal(false);
+    Toast.show({
+      type: 'success',
+      text1: 'Recipe Added Successfully',
+      position: 'bottom',
+    });
   };
 
   const handleLogout = () => {
@@ -61,6 +69,11 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
     // console.log('==> current item id', recipeItemId);
     await deleteRecipe(recipeItemId);
     await fetchRecipes();
+    Toast.show({
+      type: 'info',
+      text1: 'Recipe Deleted Successfully',
+      position: 'top',
+    });
   };
 
   useEffect(() => {
@@ -85,6 +98,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
           </TouchableOpacity>
         </View>
       </View>
+
       {/* Render List of Recipe */}
       <FlatList
         data={filteredRecipe}
@@ -110,12 +124,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
           onSubmit={handleOnCreateReciepeButtonSubmit}
           onCancle={() => setShowModal(false)}
         />
-        {/* <View style={styles.modalConatiner}>
-          <View style={styles.modalContent}>
-           
-          </View>
-          </View> */}
       </Modal>
+      <TouchableOpacity style={styles.imageBtn} onPress={() => navigation.navigate('ImageUpload')}>
+        <Text>Upload Image</Text>
+      </TouchableOpacity>
+
+      <Toast />
     </SafeAreaView>
   );
 };
@@ -174,5 +188,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     width: '90%',
     maxWidth: 400,
+  },
+  imageBtn: {
+    alignItems: 'center',
   },
 });
