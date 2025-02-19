@@ -5,7 +5,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
@@ -18,6 +18,13 @@ import SplashScreen from 'react-native-splash-screen';
 import {useNavigation} from '@react-navigation/native';
 import {AuthContext} from '../context/AuthContext';
 import ImageUpload from '../screens/ImageUpload';
+import OnBoarding1 from '../screens/onBoarding/OnBoarding1';
+import OnBoarding2 from '../screens/onBoarding/OnBoarding2';
+import OnBoarding3 from '../screens/onBoarding/OnBoarding3';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import ForgetPassword from '../screens/ForgetPassword';
+import {Linking} from 'react-native';
+import ResetPassword from '../screens/ResetPassword';
 
 export type RootStackParamsList = {
   Login: undefined;
@@ -25,6 +32,11 @@ export type RootStackParamsList = {
   Home: undefined;
   RecipeDetails: {recipeId: string};
   ImageUpload: undefined;
+  OnBoarding1: undefined;
+  OnBoarding2: undefined;
+  OnBoarding3: undefined;
+  ForgetPassword: undefined;
+  ResetPassword: { email: string };  
 };
 
 const Stack = createNativeStackNavigator<RootStackParamsList>();
@@ -32,17 +44,32 @@ const Stack = createNativeStackNavigator<RootStackParamsList>();
 type NavigationProps = NativeStackNavigationProp<RootStackParamsList>;
 
 const RootNavigation = () => {
+  const [isFirstLaunch, setIsFirstLaunch] = useState<boolean>(true);
   const navigation = useNavigation<NavigationProps>();
   const {isLoading, isAuthenticated} = useContext(AuthContext);
 
+  const getStorage = async () => {
+    const onboarded = await AsyncStorage.getItem('hasSeenOnboarding');
+    onboarded && setIsFirstLaunch(false);
+  };
+
   useEffect(() => {
     SplashScreen.hide();
+    getStorage();
   }, []);
   useEffect(() => {
     if (!isLoading) {
       navigation.reset({
         index: 0,
-        routes: [{name: isAuthenticated ? 'Home' : 'Login'}],
+        routes: [
+          {
+            name: isAuthenticated
+              ? 'Home'
+              : isFirstLaunch
+              ? 'OnBoarding1'
+              : 'Login',
+          },
+        ],
       });
     }
   }, [isAuthenticated, isLoading]);
@@ -58,7 +85,22 @@ const RootNavigation = () => {
   }
 
   return (
-    <Stack.Navigator initialRouteName="Login">
+    <Stack.Navigator initialRouteName="OnBoarding1">
+      <Stack.Screen
+        name="OnBoarding1"
+        component={OnBoarding1}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="OnBoarding2"
+        component={OnBoarding2}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="OnBoarding3"
+        component={OnBoarding3}
+        options={{headerShown: false}}
+      />
       <Stack.Screen
         name="Login"
         component={LoginScreen}
@@ -67,6 +109,16 @@ const RootNavigation = () => {
       <Stack.Screen
         name="SignUp"
         component={SignUpScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="ForgetPassword"
+        component={ForgetPassword}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="ResetPassword"
+        component={ResetPassword}
         options={{headerShown: false}}
       />
 
