@@ -1,4 +1,4 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamsList} from '../navigation/RootNavigation';
 import {RouteProp} from '@react-navigation/native';
 import {useState} from 'react';
@@ -11,13 +11,13 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import {API_URL} from '../context/AuthContext';
+import Toast from 'react-native-toast-message';
 
-type ResetPasswordNavigationProp = NativeStackScreenProps<
+type ResetPasswordNavigationProp = NativeStackNavigationProp<
   RootStackParamsList,
   'ResetPassword'
 >;
 
-// Define the type for the route prop
 type ResetPasswordRouteProp = RouteProp<RootStackParamsList, 'ResetPassword'>;
 
 interface FResetPasswordProps {
@@ -30,19 +30,46 @@ const ResetPassword: React.FC<FResetPasswordProps> = ({navigation, route}) => {
   const [newPassword, setNewPassword] = useState('');
   const [message, setMessage] = useState('');
   const {email} = route.params;
+  // console.log("==> email", email);
+  // console.log("==> code", code);
+  // console.log("==> newPassword", newPassword);
+
   const handleResetPassword = async () => {
+    console.log('==> called');
+
     try {
       const response = await axios.post(`${API_URL}/api/auth/reset-password`, {
         email,
         code,
         newPassword,
       });
-      if(response.data.success){
+      console.log('==> Reset ', response.data.message);
+      Toast.show({
+        type: 'success',
+        text1: response.data.message,
+        position: 'top',
+      });
+      if (response.data.success) {
         setMessage(response.data.message);
+        navigation.replace('Login');
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: response.data.message,
+          position: 'top',
+        });
       }
     } catch (error) {
       console.log('==> ResetPassword E', error);
     }
+  };
+  const toasttest = async () => {
+    Toast.show({
+      type: 'success',
+      text1: 'demo',
+
+      position: 'top',
+    });
   };
 
   return (
@@ -56,17 +83,21 @@ const ResetPassword: React.FC<FResetPasswordProps> = ({navigation, route}) => {
       />
       <TextInput
         style={styles.inputBox}
-        placeholder="Email here"
+        placeholder="Enter New Password"
         placeholderTextColor="#2e2e2e"
         autoCapitalize="none"
-        keyboardType="email-address"
         value={newPassword}
         onChangeText={setNewPassword}
       />
       <TouchableOpacity style={styles.btn} onPress={handleResetPassword}>
         <Text style={styles.btnText}>Reset Password</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity style={styles.btn} onPress={toasttest}>
+        <Text style={styles.btnText}>demo Password</Text>
+      </TouchableOpacity>
       {message && <Text>{message}</Text>}
+      <Toast />
     </View>
   );
 };
@@ -85,7 +116,7 @@ const styles = StyleSheet.create({
     height: 45,
     borderRadius: 8,
     paddingHorizontal: 10,
-    // marginBottom: 15,
+    marginTop: 15,
   },
   btn: {
     width: '100%',

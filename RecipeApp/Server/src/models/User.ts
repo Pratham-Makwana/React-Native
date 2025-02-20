@@ -18,7 +18,9 @@ const UserSchema = new Schema<IUser>({
     required: true,
     unique: true,
   },
-  resetPasswordToken: String,
+  resetPasswordToken: {
+    type : String
+  },
   resetPasswordExpires: Date,
 });
 

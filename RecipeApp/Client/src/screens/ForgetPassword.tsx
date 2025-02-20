@@ -11,6 +11,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamsList} from '../navigation/RootNavigation';
 import axios from 'axios';
 import {API_URL} from '../context/AuthContext';
+import Toast from 'react-native-toast-message';
 
 type ForgetPasswordNavigationStackProps = NativeStackNavigationProp<
   RootStackParamsList,
@@ -25,23 +26,29 @@ const ForgetPassword: React.FC<ForgetPasswordProps> = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const handleSubmit = async () => {
+   
     try {
       const response = await axios.post(`${API_URL}/api/auth/forget-password`, {
         email,
       });
+      Toast.show({
+        type: 'success',
+        text1: 'Password reset code sent to your email.',
+        position: 'top',
+      });
       console.log('Success', response.data.message);
+      console.log('Success', response.data.success);
       if (response.data.success) {
         setMessage(response.data.message);
         navigation.navigate('ResetPassword', {email});
       }
-      
     } catch (e) {
       console.log('==> ForgetPassword Err', e);
     }
   };
   return (
     <View style={styles.container}>
-      <Text style={styles.headerTxt}> Reset Password</Text>
+      <Text style={styles.headerTxt}> Enter Email For Reset Password</Text>
       <TextInput
         style={styles.inputBox}
         placeholder="Email here"
@@ -55,6 +62,7 @@ const ForgetPassword: React.FC<ForgetPasswordProps> = ({navigation}) => {
         <Text style={styles.btnText}>Submit</Text>
       </TouchableOpacity>
       {message && <Text>{message}</Text>}
+      <Toast />
     </View>
   );
 };

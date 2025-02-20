@@ -11,6 +11,7 @@ import React, {useContext, useState} from 'react';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamsList} from '../navigation/RootNavigation';
 import {AuthContext} from '../context/AuthContext';
+import Toast from 'react-native-toast-message';
 
 type LoginNavigationStackProps = NativeStackNavigationProp<
   RootStackParamsList,
@@ -29,14 +30,24 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
   const handleLogin = async () => {
     if (email && password) {
       const result = await signIn(email, password);
+
       if (result) {
-        navigation.navigate('Home');
+        setTimeout(() => {
+          navigation.navigate('Home');
+        }, 30000);
       } else {
         Alert.alert(
           'Login Failed',
           'Please check your credentials and try again',
         );
       }
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Please Enter Email And Password',
+        position: 'top',
+        visibilityTime: 3000,
+      });
     }
   };
   return (
@@ -61,7 +72,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
           value={password}
           onChangeText={setPassword}
         />
-        <Pressable style={styles.forgetBox} onPress={()=> navigation.navigate('ForgetPassword')}>
+        <Pressable
+          style={styles.forgetBox}
+          onPress={() => navigation.navigate('ForgetPassword')}>
           <Text>Forget Password ?</Text>
         </Pressable>
       </View>
@@ -75,6 +88,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
           <Text style={styles.link}>SignUp</Text>
         </TouchableOpacity>
       </View>
+      <Toast />
     </View>
   );
 };
@@ -92,11 +106,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 20,
-    textAlign : 'center'
+    textAlign: 'center',
   },
-  inputContainer : {
-    
-  },
+  inputContainer: {},
   inputBox: {
     borderWidth: 1.5,
     borderColor: '#718096',
@@ -128,7 +140,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   text: {
-    color : '#000',
+    color: '#000',
     fontSize: 14,
     fontWeight: '600',
   },
@@ -139,7 +151,7 @@ const styles = StyleSheet.create({
   },
   forgetBox: {
     position: 'absolute',
-    
+
     right: 10,
     bottom: -12,
   },

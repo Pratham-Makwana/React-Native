@@ -69,7 +69,7 @@ router.post("/login", async (req: Request, res: Response): Promise<any> => {
         userId: currentUser._id,
       },
       "JWT_SECRET"
-      // { expiresIn: "1h" }
+      
     );
 
     return res.status(200).json({
@@ -124,9 +124,10 @@ router.post("/forget-password", async (req, res): Promise<any> => {
     };
 
     await transporter.sendMail(mailOptions);
-    return res
-      .status(200)
-      .json({ message: "Password reset code sent to your email." });
+    return res.status(200).json({
+      success: true,
+      message: "Password reset code sent to your email.",
+    });
   } catch (e) {
     console.log("==> Forget Password Err", e);
     return res
@@ -140,10 +141,8 @@ router.post("/reset-password", async (req, res): Promise<any> => {
 
   try {
     const user = await User.findOne({ email });
+    console.log("==> user", user);
 
-    if (!user) {
-      return res.status(400).json({ message: "Invalid or expired token!" });
-    }
     if (!user) {
       return res.status(400).json({
         success: false,
@@ -151,36 +150,34 @@ router.post("/reset-password", async (req, res): Promise<any> => {
       });
     }
     if (user.resetPasswordToken !== code) {
-      return res.status(400).json({
+      return res.status(200).json({
         success: false,
         message: "Invalid reset code.",
       });
     }
     if (!user.resetPasswordExpires) {
-      return res.status(400).json({
+      return res.status(200).json({
         success: false,
         message: "Password reset token not found.",
       });
     }
     if (user.resetPasswordExpires < new Date()) {
-      return res.status(400).json({
+      return res.status(200).json({
         success: false,
         message: "Reset code has expired.",
       });
     }
 
-    // Hash the new password and update the user document
     const hashedPassword = await bcrypt.hash(newPassword, 12);
     user.password = hashedPassword;
-    user.resetPasswordToken = undefined; 
+    user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
 
     await user.save();
-    return res
-      .status(200)
-      .json({
-        success : true,
-         message: "Password has been reset successfully!" });
+    return res.status(200).json({
+      success: true,
+      message: "Password has been reset successfully!",
+    });
   } catch (e) {
     console.log("==> Reset Err", e);
 
@@ -189,4 +186,5 @@ router.post("/reset-password", async (req, res): Promise<any> => {
       .json({ message: "Something went wrong, please try again!" });
   }
 });
+
 export default router;
