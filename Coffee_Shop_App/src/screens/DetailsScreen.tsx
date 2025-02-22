@@ -18,12 +18,13 @@ import {
 } from '../theme/theme';
 import ImagebackgroundInfo from '../components/ImagebackgroundInfo';
 import {useStore} from '../store/store';
+import PriceFooter from '../components/PriceFooter';
 
 const DetailsScreen = ({navigation, route}: any) => {
   // console.log('Route', route.params);
   const ItemOfIndex = useStore((state: any) =>
-    route.params.type == 'Coffee' ? state.CoffeeList : state.BeanList,
-  )[route.params.index];
+    route?.params?.type == 'Coffee' ? state.CoffeeList : state.BeansList,
+  )[route?.params?.index];
   // console.log("==> ", ItemOfIndex);
   const [fullDesc, setFullDesc] = useState(false);
   const [price, setPrice] = useState(ItemOfIndex.prices[0]);
@@ -33,20 +34,49 @@ const DetailsScreen = ({navigation, route}: any) => {
   const deleteFromFavoriteList = useStore(
     (state: any) => state.deleteFromFavoriteList,
   );
+  const addToCart = useStore((state: any) => state.addToCart);
+  const calculateCartPrice = useStore((state: any) => state.calculateCartPrice);
+ 
 
   const ToggleFavourite = (favourite: boolean, type: string, id: string) => {
+    console.log("==> ",favourite,type, id);
+    
     favourite ? deleteFromFavoriteList(id, type) : addToFavoriteList(id, type);
   };
 
   const BackHandle = () => {
     navigation.pop();
   };
+
+  const addToCartHandler = ({
+    id,
+    index,
+    name,
+    roasted,
+    imagelink_square,
+    special_ingredient,
+    type,
+    price,
+  }: any) => {
+    addToCart({
+      id,
+      index,
+      name,
+      roasted,
+      imagelink_square,
+      special_ingredient,
+      type,
+      prices: [{...price, quantity: 1}],
+    });
+    calculateCartPrice();
+    navigation.navigate('Tab', {screen: 'Card'});
+  };
   return (
     <View style={styles.ScreenContainer}>
       <StatusBar backgroundColor={COLORS.primaryBlackHex} />
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={styles.ScrollViewFlex}>
+        contentContainerStyle={styles.ScrollViewFlex}>
         <ImagebackgroundInfo
           EnableBackHandler={true}
           imagelink_portrait={ItemOfIndex.imagelink_portrait}
@@ -64,6 +94,7 @@ const DetailsScreen = ({navigation, route}: any) => {
         />
 
         <View style={styles.FooterInfoArea}>
+          {/* Description */}
           <Text style={styles.InfoTitle}>Description</Text>
           <TouchableWithoutFeedback onPress={() => setFullDesc(prev => !prev)}>
             <Text
@@ -72,6 +103,7 @@ const DetailsScreen = ({navigation, route}: any) => {
               {ItemOfIndex.description}
             </Text>
           </TouchableWithoutFeedback>
+          {/* Size */}
           <Text style={styles.InfoTitle}>Size</Text>
           <View style={styles.SizeOuterContainer}>
             {ItemOfIndex.prices.map((data: any) => (
@@ -109,6 +141,23 @@ const DetailsScreen = ({navigation, route}: any) => {
             ))}
           </View>
         </View>
+        {/* Price Footer */}
+        <PriceFooter
+          price={price}
+          buttonTitle="Add To Cart"
+          buttonPressHandler={() => {
+            addToCartHandler({
+              id: ItemOfIndex.id,
+              index: ItemOfIndex.index,
+              name: ItemOfIndex.name,
+              roasted: ItemOfIndex.roasted,
+              imagelink_square: ItemOfIndex.imagelink_square,
+              special_ingredient: ItemOfIndex.special_ingredient,
+              type: ItemOfIndex.type,
+              price: price,
+            });
+          }}
+        />
       </ScrollView>
     </View>
   );
@@ -123,6 +172,7 @@ const styles = StyleSheet.create({
     // by default scrollview take size of the content that inside the scrollview
     // using this we saying take whole space of the screen
     flexGrow: 1,
+    justifyContent: 'space-between',
     // backgroundColor : 'red'
   },
   FooterInfoArea: {
@@ -138,10 +188,10 @@ const styles = StyleSheet.create({
     fontFamily: FONTFAMILY.poppins_regular,
     color: COLORS.primaryWhiteHex,
     fontSize: FONTSIZE.size_14,
-    marginBottom: SPACING.space_30,
+    marginBottom: SPACING.space_20,
   },
   SizeOuterContainer: {
-    // flex: 1,
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -152,7 +202,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primaryDarkGreyHex,
     alignItems: 'center',
     justifyContent: 'center',
-
     height: SPACING.space_24 * 2,
     borderRadius: BORDERRADIUS.radius_10,
     borderWidth: 2,

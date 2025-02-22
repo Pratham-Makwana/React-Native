@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../theme/theme';
 import GradientBGIcon from './GradientBGIcon';
@@ -8,13 +8,17 @@ interface HeaderBarProps {
 }
 const HeaderBar: React.FC<HeaderBarProps> = ({title}) => {
   return (
-    <View style={styles.HeaderContainer}>
+    <View
+      style={[
+        styles.HeaderContainer,
+        {marginTop: Platform.OS == 'ios' ? 25 : 0},
+      ]}>
       <GradientBGIcon
         name="menu"
         size={FONTSIZE.size_16}
         color={COLORS.primaryLightGreyHex}
       />
-        <Text style={styles.HeaderText}>{title}</Text>
+      <Text style={styles.HeaderText}>{title}</Text>
       <ProfilePic />
     </View>
   );

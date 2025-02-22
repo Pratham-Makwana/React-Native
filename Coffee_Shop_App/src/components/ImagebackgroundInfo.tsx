@@ -1,5 +1,6 @@
 import {
   ImageBackground,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -52,7 +53,11 @@ const ImagebackgroundInfo: React.FC<ImagebackgroundInfoProps> = ({
         source={imagelink_portrait}
         style={styles.ItemBackgroundImage}>
         {EnableBackHandler ? (
-          <View style={styles.ImageHeaderBarWithBack}>
+          <View
+            style={[
+              styles.ImageHeaderBarWithBack,
+              {marginTop: Platform.OS == 'ios' ? 25 : 0},
+            ]}>
             {EnableBackHandler && (
               <TouchableOpacity onPress={() => BackHandler()}>
                 <GradientBGIcon
@@ -63,7 +68,9 @@ const ImagebackgroundInfo: React.FC<ImagebackgroundInfoProps> = ({
               </TouchableOpacity>
             )}
             <TouchableOpacity
-              onPress={() => ToggleFavourite(favourite, id, type)}>
+              onPress={() => {
+                console.log('==> called');
+              }}>
               <GradientBGIcon
                 name="like"
                 size={FONTSIZE.size_16}
@@ -74,8 +81,9 @@ const ImagebackgroundInfo: React.FC<ImagebackgroundInfoProps> = ({
             </TouchableOpacity>
           </View>
         ) : (
-          <View style={styles.ImageHeaderBarWithBack}>
-            <TouchableOpacity>
+          <View style={[styles.ImageHeaderBarWithBack, {marginTop: Platform.OS == 'ios' ? 25 : 0},]}>
+            <TouchableOpacity
+              onPress={() => ToggleFavourite(favourite, id, type)}>
               <GradientBGIcon
                 name="like"
                 size={FONTSIZE.size_16}
@@ -122,7 +130,7 @@ const ImagebackgroundInfo: React.FC<ImagebackgroundInfoProps> = ({
                     size={FONTSIZE.size_16}
                     color={COLORS.primaryOrangeHex}
                   />
-                  <Text style={styles.PropertyTextLast}>{ingredients}</Text>
+                  <Text style={styles.PropertyTextFirst}>{ingredients}</Text>
                 </View>
               </View>
             </View>
@@ -236,14 +244,13 @@ const styles = StyleSheet.create({
   },
   RoastedContainer: {
     height: 55,
-    width : 55 * 2 + SPACING.space_20,
-    borderRadius :BORDERRADIUS.radius_15,
-    justifyContent :'center',
-    alignItems : 'center',
-    backgroundColor : COLORS.primaryBlackHex
+    width: 55 * 2 + SPACING.space_20,
+    borderRadius: BORDERRADIUS.radius_15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.primaryBlackHex,
   },
   RoastedText: {
-
     fontFamily: FONTFAMILY.poppins_regular,
     fontSize: FONTSIZE.size_10,
     color: COLORS.primaryWhiteHex,

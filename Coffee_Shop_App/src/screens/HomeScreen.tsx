@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -22,6 +23,7 @@ import {
 import HeaderBar from '../components/HeaderBar';
 import CustomIcon from '../components/CustomIcon';
 import CoffeeCard from '../components/CoffeeCard';
+import {Platform} from 'react-native';
 
 const getCategoriesFromData = (data: any) => {
   const temp: any = {};
@@ -67,6 +69,8 @@ const HomeScreen = ({navigation}: any) => {
   );
   const ListRef: any = useRef<FlatList>();
   const tabBarHeight = useBottomTabBarHeight();
+  const addToCart = useStore((state: any) => state.addToCart);
+  const calculateCartPrice = useStore((state: any) => state.calculateCartPrice);
 
   const seachCoffee = (search: string) => {
     console.log(search);
@@ -84,7 +88,7 @@ const HomeScreen = ({navigation}: any) => {
       ]);
     }
   };
-  // console.log("==> sorted Search ", sortedCoffee.length);
+  // console.log('==> sorted Search ', sortedCoffee[0].prices[2]);
 
   const resetSearchCoffee = () => {
     ListRef?.current?.scrollToOffset({
@@ -95,7 +99,34 @@ const HomeScreen = ({navigation}: any) => {
     setSortedCoffee([...CoffeeList]);
     setSearchText('');
   };
-
+  const CoffeCardAddToCart = ({
+    id,
+    index,
+    name,
+    roasted,
+    imagelink_square,
+    special_ingredient,
+    type,
+    prices,
+  }: any) => {
+    addToCart({
+      id,
+      index,
+      name,
+      roasted,
+      imagelink_square,
+      special_ingredient,
+      type,
+      prices,
+    });
+    calculateCartPrice();
+    Platform.OS == 'android' &&
+      ToastAndroid.showWithGravity(
+        `${name} is Added to Cart`,
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
+  };
   return (
     <View style={styles.ScreenContainer}>
       <StatusBar backgroundColor={COLORS.primaryBlackHex} />
@@ -214,7 +245,7 @@ const HomeScreen = ({navigation}: any) => {
                 special_ingredient={item.special_ingredient}
                 average_rating={item.average_rating}
                 price={item.prices[2]}
-                buttonPressHandler={() => {}}
+                buttonPressHandler={CoffeCardAddToCart}
               />
             </TouchableOpacity>
           )}
@@ -249,7 +280,7 @@ const HomeScreen = ({navigation}: any) => {
                 special_ingredient={item.special_ingredient}
                 average_rating={item.average_rating}
                 price={item.prices[2]}
-                buttonPressHandler={() => {}}
+                buttonPressHandler={CoffeCardAddToCart}
               />
             </TouchableOpacity>
           )}
