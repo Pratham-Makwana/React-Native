@@ -28,7 +28,10 @@ const CardScreen = ({navigation}: any) => {
   const tabBarHeight = useBottomTabBarHeight();
 
   const buttonPressHandler = () => {
-    navigation.navigate('History');
+    navigation.push(
+      'Payment',
+       {amount: CartPrice}
+    );
   };
 
   const incrementCartItemQuantityHandler = (id: string, size: string) => {
@@ -55,13 +58,15 @@ const CardScreen = ({navigation}: any) => {
             ) : (
               <View style={styles.ListItemContainer}>
                 {CartList.map((data: any) => (
-                  <TouchableOpacity onPress={() => {
-                    navigation.push('Details', {
-                      index : data.index,
-                      id : data.id,
-                      type : data.type
-                    })
-                  }} key={data.id}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.push('Details', {
+                        index: data.index,
+                        id: data.id,
+                        type: data.type,
+                      });
+                    }}
+                    key={data.id}>
                     <CartItem
                       id={data.id}
                       name={data.name}

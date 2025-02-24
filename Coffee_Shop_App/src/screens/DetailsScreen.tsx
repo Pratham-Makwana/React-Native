@@ -25,7 +25,7 @@ const DetailsScreen = ({navigation, route}: any) => {
   const ItemOfIndex = useStore((state: any) =>
     route?.params?.type == 'Coffee' ? state.CoffeeList : state.BeansList,
   )[route?.params?.index];
-  // console.log("==> ", ItemOfIndex);
+  console.log("==> ", ItemOfIndex);
   const [fullDesc, setFullDesc] = useState(false);
   const [price, setPrice] = useState(ItemOfIndex.prices[0]);
   // console.log('price', price);
@@ -36,11 +36,10 @@ const DetailsScreen = ({navigation, route}: any) => {
   );
   const addToCart = useStore((state: any) => state.addToCart);
   const calculateCartPrice = useStore((state: any) => state.calculateCartPrice);
- 
 
   const ToggleFavourite = (favourite: boolean, type: string, id: string) => {
-    console.log("==> ",favourite,type, id);
-    
+    // console.log("==> ",favourite,type, id);
+
     favourite ? deleteFromFavoriteList(id, type) : addToFavoriteList(id, type);
   };
 

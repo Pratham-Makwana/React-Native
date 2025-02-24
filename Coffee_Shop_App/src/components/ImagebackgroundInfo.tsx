@@ -69,7 +69,8 @@ const ImagebackgroundInfo: React.FC<ImagebackgroundInfoProps> = ({
             )}
             <TouchableOpacity
               onPress={() => {
-                console.log('==> called');
+                // console.log('==> called');
+                ToggleFavourite(favourite, id, type);
               }}>
               <GradientBGIcon
                 name="like"
@@ -81,7 +82,11 @@ const ImagebackgroundInfo: React.FC<ImagebackgroundInfoProps> = ({
             </TouchableOpacity>
           </View>
         ) : (
-          <View style={[styles.ImageHeaderBarWithBack, {marginTop: Platform.OS == 'ios' ? 25 : 0},]}>
+          <View
+            style={[
+              styles.ImageHeaderBarWithBack,
+              {marginTop: Platform.OS == 'ios' ? 25 : 0},
+            ]}>
             <TouchableOpacity
               onPress={() => ToggleFavourite(favourite, id, type)}>
               <GradientBGIcon

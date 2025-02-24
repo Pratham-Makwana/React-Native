@@ -218,7 +218,7 @@ export const useStore = create(
               0,
             );
 
-            if (state.OrderHistoryList.lenght > 0) {
+            if (state.OrderHistoryList.length > 0) {
               state.OrderHistoryList.unshift({
                 OrderDate:
                   new Date().toDateString() +
